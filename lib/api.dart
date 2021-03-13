@@ -10,7 +10,7 @@ class Api {
 
     decode(response);
   }
-  decode(http.Response response){
+   List<Video>decode(http.Response response){
     if(response.statusCode == 200){
       var decoded = json.decode(response.body);
 
@@ -19,8 +19,10 @@ class Api {
             return Video.fromJson(map);
           }
       ).toList();
-
-      print(videos);
+      return videos;
+    }else {
+      throw Exception("Failed to load videos");
+      
     }
   }
 }
