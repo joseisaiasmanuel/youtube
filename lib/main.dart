@@ -4,6 +4,8 @@ import 'package:youtube/api.dart';
 import 'package:youtube/blocs/video_blocs.dart';
 import 'package:youtube/screen/screen_home.dart';
 
+import 'blocs/favorites_blocs.dart';
+
 void main(){
   Api api = Api();
   api.search("eletro");
@@ -16,10 +18,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       bloc: VideosBloc(),
-        child: MaterialApp(
-          title: "Fluttertube",
-          home: Home(),
-        ));
+        child: BlocProvider(
+          bloc: FavoriteBloc(),
+          child:MaterialApp(
+            title: "Fluttertube",
+            home: Home(),
+          ) ,
+        ) );
   }
 }
 
