@@ -1,4 +1,6 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:youtube/blocs/favorites_blocs.dart';
 import 'package:youtube/models/video.dart';
 
 class VideoTile extends StatelessWidget {
@@ -7,6 +9,7 @@ class VideoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc =BlocProvider.of<FavoriteBloc>(context);
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4),
       child: Column(
@@ -29,8 +32,7 @@ class VideoTile extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
                     child: Text(
                       video.title,
-                      style: TextStyle(color: Colors.white, fontSize: 16.0
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 16.0),
                       maxLines: 2,
                     ),
                   ),
@@ -43,13 +45,24 @@ class VideoTile extends StatelessWidget {
                   )
                 ],
               )),
-              IconButton(
-                  icon: Icon(
-                    Icons.star_border,
-                  ),
-                  color: Colors.white,
-                  iconSize: 30,
-                  onPressed: () {})
+              StreamBuilder<Map<String, Video>>(
+                  stream: bloc.autFive,
+                  initialData:{},
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData)
+                      return IconButton(
+                          icon: Icon(
+                           snapshot.data.containsKey(video.id) ?
+                           Icons.star: Icons.star_border,
+                          ),
+                          color: Colors.white,
+                          iconSize: 30,
+                          onPressed: () {
+                            bloc.toggleFavorite(video);
+                          });
+                    else
+                    return CircularProgressIndicator();
+                  })
             ],
           )
         ],
