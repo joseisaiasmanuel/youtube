@@ -13,7 +13,7 @@ class FavoriteBloc implements BlocBase{
   Stream <Map<String, Video>> get autFive => _favoriteController.stream;
   FavoriteBloc(){
     SharedPreferences.getInstance().then((prefs){
-      prefs.clear();
+
       if (prefs.getKeys().contains("favorites")){
         _favorites = json.decode(prefs.getString("favorites")).map((k,v){
           return MapEntry(k, Video.fromJson(v));
